@@ -18,6 +18,8 @@ import retrofit2.Response;
 /**
  * Created by Colabear on 2016-04-11.
  */
+
+//TODO : implements Only VERSION_CHECK continue Next!!!
 public class DataDragonBinder implements Callback<ResponseBody> {
 
 //    SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -87,6 +89,7 @@ public class DataDragonBinder implements Callback<ResponseBody> {
 
                 break;
             case LOAD_CHAMPION:
+
                 break;
         }
     }
@@ -105,7 +108,7 @@ public class DataDragonBinder implements Callback<ResponseBody> {
                     if(UserPref.getLatestVersion().equals(latestVersion)){
                         return;
                     }
-
+                    nextStep();
                 } catch (Exception e) {
                     e.printStackTrace();
                     return;
