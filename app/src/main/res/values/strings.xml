@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">LoLBanner</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="label_complete_setting">설정 완료</string>
+    <string name="hint_summon">소환사명을 입력해주세요.</string>
+    <string name="label_widget">위젯배치</string>
+    <string name="msg_empty_name">이름을 입력해주세요.</string>
+    <string name="msg_error_setting">검색 실패</string>
+    <string name="url_server">https://kr.api.pvp.net</string>
+    <string name="region">kr</string>
+</resources>
