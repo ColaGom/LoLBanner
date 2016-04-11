@@ -16,5 +16,6 @@ public class GlobalApplication extends Application {
         UserPref.init(this);
         LOLClient.init(this);
         Logger.init(Const.TAG);
+
     }
 }

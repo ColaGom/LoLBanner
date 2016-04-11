@@ -2,6 +2,8 @@ package com.cbstudio.lolbanner.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,36 +16,59 @@ import retrofit2.Response;
  */
 public class ResponseTo {
 
-    public static Summoner summoner(Response<ResponseBody> response, String userName) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readValue(response.body().string() , JsonNode.class);
+    private static ObjectMapper mapper = null;
 
-        return mapper.treeToValue(node.get(userName), Summoner.class);
+    private  static  ObjectMapper getMapper(){
+        if(mapper == null) mapper = new ObjectMapper();
+        return mapper;
+    }
+
+    public static Summoner summoner(Response<ResponseBody> response, String userName) throws Exception {
+        JsonNode node = getMapper().readValue(response.body().string(), JsonNode.class);
+
+        return getMapper().treeToValue(node.get(userName), Summoner.class);
     }
 
     public static StatSummary statSummary(Response<ResponseBody> response) throws Exception{
-        ObjectMapper mapper = new ObjectMapper();
 
-        return  mapper.readValue(response.body().string(), StatSummary.class);
+        return  getMapper().readValue(response.body().string(), StatSummary.class);
     }
 
     public static List<RankInfo> rankInfo(Response<ResponseBody> response, List<String> userIds) throws Exception{
-        ObjectMapper mapper = new ObjectMapper();
-
-        JsonNode node = mapper.readValue(response.body().string(), JsonNode.class);
+        JsonNode node = getMapper().readValue(response.body().string(), JsonNode.class);
 
         List<RankInfo> result = new ArrayList<>();
 
         for(String userId:userIds)
         {
-            result.add(mapper.treeToValue(node.get(userId), RankInfo.class));
+            result.add(getMapper().treeToValue(node.get(userId), RankInfo.class));
         }
         return result;
     }
 
     public static CurrentGame currentGame(Response<ResponseBody> response) throws Exception{
-        ObjectMapper mapper = new ObjectMapper();
 
-        return mapper.readValue(response.body().string(), CurrentGame.class);
+        return getMapper().readValue(response.body().string(), CurrentGame.class);
+    }
+
+    public static String latestVersion(Response<ResponseBody> response) throws  Exception{
+        List<String> versions = getMapper().readValue(response.body().string(),
+                TypeFactory.defaultInstance().constructCollectionType(List.class, String.class));
+
+        return versions.get(0);
+    }
+
+    public static List<Champion> champions(Response<ResponseBody> response) throws  Exception {
+        JsonNode arrNode =getMapper().readTree(response.body().string()).get("data");
+
+        List<Champion> result = new ArrayList<>();
+
+        if(arrNode.isArray()){
+            for(JsonNode node : arrNode){
+                Logger.d(node.asText());
+            }
+        }
+
+        return result;
     }
 }

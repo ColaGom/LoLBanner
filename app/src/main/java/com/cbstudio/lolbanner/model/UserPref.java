@@ -41,4 +41,15 @@ public class UserPref {
     {
         return mPref.getString(KEY_USER_ID, "");
     }
+
+    private  static  final String KEY_LATEST_VERSION = "key.latest.version";
+    public static  void putLatestVersion(String version)
+    {
+        mEditor.putString(KEY_LATEST_VERSION, version);
+        mEditor.commit();
+    }
+
+    public static  String getLatestVersion(){
+        return mPref.getString(KEY_LATEST_VERSION, "");
+    }
 }

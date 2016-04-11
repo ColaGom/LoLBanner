@@ -96,5 +96,5 @@ public interface API {
      * @return
      */
     @GET("/api/lol/static-data/{region}/v1.2/versions")
-    Call<ResponseBody> getRankInfo(@Path("region") String region);
+    Call<ResponseBody> getLatestVersion(@Path("region") String region,@Query("api_key") String apiKey);
 }

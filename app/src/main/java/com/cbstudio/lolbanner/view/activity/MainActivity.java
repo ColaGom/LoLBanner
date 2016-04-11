@@ -5,13 +5,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.cbstudio.lolbanner.DataDragonBinder;
 import com.cbstudio.lolbanner.R;
 import com.cbstudio.lolbanner.Values;
 import com.cbstudio.lolbanner.view.fragment.MainFragment;
 import com.cbstudio.lolbanner.view.fragment.SettingFragment;
 import com.cbstudio.lolbanner.model.Summoner;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DataDragonBinder.Listener {
+
+    @Override
+    public void onCompleteDragon(Boolean state) {
+
+    }
 
     enum FRAGMENT
     {
@@ -23,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DataDragonBinder task = new DataDragonBinder(this);
+        task.execute(this);
 
         replaceFragment(FRAGMENT.SETTING);
     }

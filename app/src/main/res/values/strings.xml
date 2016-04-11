@@ -14,4 +14,5 @@
     <string name="msg_version_check">버전 정보 조회중..</string>
     <string name="msg_load_champion">챔피언 정보 조회중...</string>
     <string name="msg_sync_champion">챔피언 정보 동기화중...</string>
+    <string name="url_server_global">https://global.api.pvp.net</string>
 </resources>
