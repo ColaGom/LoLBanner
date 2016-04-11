@@ -53,4 +53,19 @@ public class LOLClient  {
     public static  void getServerStatus(Callback<ResponseBody> callback){
         getApi().getServerStatus().enqueue(callback);
     }
+
+    public static void getCurrentGame(String userId, Callback<ResponseBody> callback)
+    {
+        getApi().getCurrentGame(REGION, userId, Const.KEY_API).enqueue(callback);
+    }
+
+    public static void getRecentGame(String userId, Callback<ResponseBody> callback)
+    {
+        getApi().getRecentGame(REGION, userId, Const.KEY_API).enqueue(callback);
+    }
+
+    public static void getRankInfo(String userIds, Callback<ResponseBody> callback)
+    {
+        getApi().getRankInfo(REGION, userIds, Const.KEY_API).enqueue(callback);
+    }
 }

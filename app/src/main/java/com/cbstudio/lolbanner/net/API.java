@@ -24,4 +24,21 @@ public interface API {
 
     @GET("/api/lol/{region}/v1.3/stats/by-summoner/{summonerId}/summary")
     Call<ResponseBody> getStatsSummary(@Path("region") String region, @Path("summonerId") String summonerId, @Query("api_key") String apiKey);
+
+    @GET("/observer-mode/rest/consumer/getSpectatorGameInfo/{region}/{summonerId}")
+    Call<ResponseBody> getCurrentGame(@Path("region") String region,@Path("summonerId") String summonerId, @Query("api_key") String apiKey);
+
+    @GET("/api/lol/{region}/v1.3/game/by-summoner/{summonerId}/recent")
+    Call<ResponseBody> getRecentGame(@Path("region") String region,@Path("summonerId") String summonerId, @Query("api_key") String apiKey);
+
+    /**
+     * get summoners rank info
+     * @param region region
+     * @param summonerIds support comma sepratated list of Ids. limit 10.
+     * @param apiKey
+     * @return
+     */
+    @GET("/api/lol/{region}/v2.5/league/by-summoner/{summonerIds}/entry")
+    Call<ResponseBody> getRankInfo(@Path("region") String region,@Path("summonerIds") String summonerIds, @Query("api_key") String apiKey);
+
 }
