@@ -5,4 +5,5 @@
     <dimen name="font_size">16sp</dimen>
     <dimen name="pad_default">8dp</dimen>
     <dimen name="font_large">20sp</dimen>
+    <dimen name="font_small">11sp</dimen>
 </resources>

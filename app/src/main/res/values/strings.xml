@@ -10,4 +10,8 @@
     <string name="msg_error_setting">검색 실패</string>
     <string name="url_server">https://kr.api.pvp.net</string>
     <string name="region">kr</string>
+    <string name="label_notfount_game">진행중인 게임이 없습니다.</string>
+    <string name="msg_version_check">버전 정보 조회중..</string>
+    <string name="msg_load_champion">챔피언 정보 조회중...</string>
+    <string name="msg_sync_champion">챔피언 정보 동기화중...</string>
 </resources>

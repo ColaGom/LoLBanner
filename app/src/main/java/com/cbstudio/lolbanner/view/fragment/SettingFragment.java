@@ -14,8 +14,6 @@ import com.cbstudio.lolbanner.model.ResponseTo;
 import com.cbstudio.lolbanner.model.Summoner;
 import com.cbstudio.lolbanner.net.LOLClient;
 
-import java.io.IOException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,7 +58,7 @@ public class SettingFragment extends BaseFragment {
                             Summoner summoner = ResponseTo.summoner(response, name);
                             summoner.setSummonerName(name);
                             activity.onSuccessSetting(summoner);
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             Toast.makeText(getContext(), R.string.msg_error_setting, Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
