@@ -2,12 +2,17 @@ package com.cbstudio.lolbanner;
 
 import android.content.Context;
 
-import com.cbstudio.lolbanner.model.Champion;
 import com.cbstudio.lolbanner.model.ResponseTo;
 import com.cbstudio.lolbanner.model.UserPref;
+import com.cbstudio.lolbanner.model.dao.ChampionData;
+import com.cbstudio.lolbanner.net.DataDragonUrlBuilder;
 import com.cbstudio.lolbanner.net.LOLClient;
 
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.Iterator;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
@@ -33,19 +38,16 @@ public class DataDragonBinder implements Callback<ResponseBody> {
     private Context context;
     private STEP currentStep;
 
-    public DataDragonBinder(Context context)
-    {
+    public DataDragonBinder(Context context) {
         this.context = context;
         mDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         mDialog.setCancelable(false);
     }
 
-    private String stepToMessage()
-    {
+    private String stepToMessage() {
         String msg = "";
 
-        switch (currentStep)
-        {
+        switch (currentStep) {
             case VERSION_CHECK:
                 msg = context.getString(R.string.msg_version_check);
                 break;
@@ -61,27 +63,25 @@ public class DataDragonBinder implements Callback<ResponseBody> {
         return msg;
     }
 
-    private void updateDialog()
-    {
+    private void updateDialog() {
         mDialog.setTitleText(stepToMessage());
     }
 
-    public void load(){
+    public void load() {
         mDialog.show();
         currentStep = STEP.VERSION_CHECK;
         LOLClient.getLatestVersion(this);
         execute();
     }
 
-    private void nextStep(){
+    private void nextStep() {
         currentStep = currentStep.next();
         execute();
     }
 
-    private void execute(){
+    private void execute() {
         updateDialog();
-        switch (currentStep)
-        {
+        switch (currentStep) {
             case VERSION_CHECK:
                 LOLClient.getLatestVersion(this);
                 break;
@@ -89,23 +89,45 @@ public class DataDragonBinder implements Callback<ResponseBody> {
 
                 break;
             case LOAD_CHAMPION:
-
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String url = new DataDragonUrlBuilder().chapionsJson().build();
+                        try {
+                            JSONObject json = JsonReader.readJsonFromUrl(url).getJSONObject("data");
+                            Iterator iterator = json.keys();
+                            while(iterator.hasNext()){
+                                String name = (String)iterator.next();
+                                JSONObject object = json.getJSONObject(name);
+                                ChampionData championData = new ChampionData();
+                                championData.setKey(object.getString("name"));
+                                championData.setImage(object.getJSONObject("image").getString("full"));
+                                championData.setTitle(object.getString("title"));
+                                championData.setName(name);
+                                championData.setTags(object.getString("tags"));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
                 break;
         }
     }
 
-    public void stop(){
+    public void stop() {
 
     }
 
     @Override
     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-        switch (currentStep)
-        {
+        switch (currentStep) {
             case VERSION_CHECK:
                 try {
                     String latestVersion = ResponseTo.latestVersion(response);
-                    if(UserPref.getLatestVersion().equals(latestVersion)){
+                    if (UserPref.getLatestVersion().equals(latestVersion)) {
                         return;
                     }
                     nextStep();
@@ -117,15 +139,15 @@ public class DataDragonBinder implements Callback<ResponseBody> {
             case SYNC_CHAMPION:
                 break;
             case LOAD_CHAMPION:
-                try {
-                    List<Champion> champions = ResponseTo.champions(response);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    List<Champion> champions = ResponseTo.champions(response);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 break;
         }
 
-        if(!currentStep.isLast())
+        if (!currentStep.isLast())
             nextStep();
         else
             mDialog.dismiss();
@@ -143,19 +165,16 @@ public class DataDragonBinder implements Callback<ResponseBody> {
 
         private static STEP[] vals = values();
 
-        public STEP next()
-        {
-            return vals[(this.ordinal()+1) % vals.length];
+        public STEP next() {
+            return vals[(this.ordinal() + 1) % vals.length];
         }
 
-        public boolean isLast()
-        {
+        public boolean isLast() {
             return this == SYNC_CHAMPION;
         }
     }
 
-    public interface Listener
-    {
+    public interface Listener {
         void onCompleteDragon(Boolean state);
     }
 }

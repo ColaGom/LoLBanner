@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements DataDragonBinder.
         setContentView(R.layout.activity_main);
 
         DataDragonBinder task = new DataDragonBinder(this);
-        task.execute(this);
+        task.load();
 
         replaceFragment(FRAGMENT.SETTING);
     }

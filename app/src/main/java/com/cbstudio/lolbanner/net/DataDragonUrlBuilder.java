@@ -34,6 +34,13 @@ public class DataDragonUrlBuilder {
         return this;
     }
 
+    public DataDragonUrlBuilder chapionsJson()
+    {
+        appendVersion();
+        stringBuilder.append("/data/en_US/champion.json");
+        return  this;
+    }
+
     public DataDragonUrlBuilder passiveAbilities(String value)
     {
         appendVersion();

@@ -71,4 +71,18 @@ public class ResponseTo {
 
         return result;
     }
+
+    public static List<Champion> champions(String json) throws  Exception {
+        JsonNode arrNode =getMapper().readTree(json).get("data");
+
+        List<Champion> result = new ArrayList<>();
+
+        if(arrNode.isArray()){
+            for(JsonNode node : arrNode){
+                Logger.d(node.asText());
+            }
+        }
+
+        return result;
+    }
 }
