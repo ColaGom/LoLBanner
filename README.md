@@ -1,7 +1,7 @@
 LoLBanner
 =====
-This Android App for lol user.
-It's make possible show current game infomation using widget. 
+This Android App for lol user.<br>
+It's make possible show current game infomation using widget.<br>
 
 ##With.
 [LoL API](https://developer.riotgames.com/)<br>
