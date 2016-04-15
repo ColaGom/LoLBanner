@@ -17,7 +17,7 @@ public class ChampionDataLoader extends Loader<ChampionData> {
     }
 
     @Override
-    ChampionData get(long key) {
+    public ChampionData get(long key) {
         return getDao().load(key);
     }
 
@@ -32,6 +32,24 @@ public class ChampionDataLoader extends Loader<ChampionData> {
         getDao().deleteAll();
         getDao().insertInTx(list);
     }
+
+    public ChampionData get(String key)
+    {
+        if(mLoadedList.size() == 0 && getDao().count() > 0){
+            mLoadedList = getDao().loadAll();
+        }
+
+        for(ChampionData data:mLoadedList)
+        {
+            if(data.getKey().equals(key))
+            {
+                return data;
+            }
+        }
+
+        return null;
+    }
+
 
 
     @Override

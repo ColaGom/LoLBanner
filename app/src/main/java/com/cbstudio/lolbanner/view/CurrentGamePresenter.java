@@ -1,14 +1,19 @@
 package com.cbstudio.lolbanner.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cbstudio.lolbanner.Const;
 import com.cbstudio.lolbanner.R;
+import com.cbstudio.lolbanner.controller.Master;
 import com.cbstudio.lolbanner.model.CurrentGame;
+import com.cbstudio.lolbanner.model.dao.ChampionData;
+import com.cbstudio.lolbanner.net.DataDragonUrlBuilder;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,7 +56,7 @@ public class CurrentGamePresenter {
         PlayerViewHolder viewHolder = new PlayerViewHolder();
 
         viewHolder.bind(rootView);
-        viewHolder.setView(player);
+        viewHolder.setView(player , inflater.getContext());
 
         return rootView;
     }
@@ -85,11 +90,15 @@ public class CurrentGamePresenter {
             ButterKnife.bind(this, view);
         }
 
-        void setView(CurrentGame.Player player)
+        void setView(CurrentGame.Player player, Context context)
         {
             tvName.setText(player.getSummonerName());
             tvKda.setText(player.getChampionId());
 
+            DataDragonUrlBuilder builder = new DataDragonUrlBuilder();
+            ChampionData championData = Master.getInstance().getChampionDataLoader().get(player.getChampionId());
+            String url = builder.campions(championData.getName()).build();
+            Glide.with(context).load(url).into(ivChamp);
         }
     }
 }
