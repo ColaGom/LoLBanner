@@ -2,6 +2,7 @@ package com.cbstudio.lolbanner;
 
 import android.content.Context;
 
+import com.cbstudio.lolbanner.controller.Master;
 import com.cbstudio.lolbanner.model.ResponseTo;
 import com.cbstudio.lolbanner.model.UserPref;
 import com.cbstudio.lolbanner.model.dao.ChampionData;
@@ -12,7 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
@@ -96,6 +99,7 @@ public class DataDragonBinder implements Callback<ResponseBody> {
                         try {
                             JSONObject json = JsonReader.readJsonFromUrl(url).getJSONObject("data");
                             Iterator iterator = json.keys();
+                            List<ChampionData> championDatas = new ArrayList<ChampionData>();
                             while(iterator.hasNext()){
                                 String name = (String)iterator.next();
                                 JSONObject object = json.getJSONObject(name);
@@ -105,7 +109,10 @@ public class DataDragonBinder implements Callback<ResponseBody> {
                                 championData.setTitle(object.getString("title"));
                                 championData.setName(name);
                                 championData.setTags(object.getString("tags"));
+                                championDatas.add(championData);
                             }
+                            Master.getInstance().getChampionDataLoader().replaceAll(championDatas);
+                            nextStep();
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {
@@ -130,6 +137,8 @@ public class DataDragonBinder implements Callback<ResponseBody> {
                     if (UserPref.getLatestVersion().equals(latestVersion)) {
                         return;
                     }
+
+                    UserPref.putLatestVersion(latestVersion);
                     nextStep();
                 } catch (Exception e) {
                     e.printStackTrace();

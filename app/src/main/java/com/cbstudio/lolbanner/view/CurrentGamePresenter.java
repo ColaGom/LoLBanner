@@ -89,6 +89,7 @@ public class CurrentGamePresenter {
         {
             tvName.setText(player.getSummonerName());
             tvKda.setText(player.getChampionId());
+
         }
     }
 }

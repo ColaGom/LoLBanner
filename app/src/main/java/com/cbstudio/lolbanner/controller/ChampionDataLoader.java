@@ -1,46 +1,65 @@
 package com.cbstudio.lolbanner.controller;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-
 import com.cbstudio.lolbanner.model.dao.ChampionData;
-import com.cbstudio.lolbanner.model.dao.ChampionDataDao;
-import com.cbstudio.lolbanner.model.dao.DaoMaster;
-import com.cbstudio.lolbanner.model.dao.DaoSession;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.greenrobot.dao.AbstractDao;
+
 /**
  * Created by Colabear on 2016-04-12.
  */
-public class ChampionDataLoader extends  {
-
-    private static ChampionDataLoader sInstance = null;
-
-    public static ChampionDataLoader getsInstance()
-    {
-        if(sInstance == null) sInstance = new ChampionDataLoader();
-        return sInstance;
+public class ChampionDataLoader extends Loader<ChampionData> {
+    @Override
+    AbstractDao<ChampionData, Long> getDao() {
+        return mSession.getChampionDataDao();
     }
 
-    private  final String NAME_DB = "cbstudio_lolbanner";
-    private Context context;
-    private ChampionDataDao championDataDao;
-    private List<ChampionData> championDataList;
-
-    public  void init(Context context)
-    {
-        this.context = context;
-        championDataList = new ArrayList<>();
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, NAME_DB, null);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        DaoSession daoSession = daoMaster.newSession();
-        championDataDao = daoSession.getChampionDataDao();
+    @Override
+    ChampionData get(long key) {
+        return getDao().load(key);
     }
 
-    public ChampionDataDao getChampionDataDao() {
-        return championDataDao;
+    @Override
+    List<ChampionData> getRange(int start, int count) {
+        return null;
+    }
+
+    public void replaceAll(List<ChampionData> list)
+    {
+        mLoadedList = list;
+        getDao().deleteAll();
+        getDao().insertInTx(list);
+    }
+
+
+    @Override
+    public List<ChampionData> getAll() {
+        if(mLoadedList.size() == 0 && getDao().count() > 0){
+            mLoadedList = getDao().loadAll();
+        }
+
+        return mLoadedList;
+    }
+    @Override
+    void insert(ChampionData data) {
+        if(!mLoadedList.contains(data))
+            mLoadedList.add(data);
+
+        getDao().insertOrReplace(data);
+    }
+
+    @Override
+    void insert(ArrayList<ChampionData> arr) {
+
+    }
+
+    @Override
+    void delete(ChampionData data) {
+        if(mLoadedList.contains(data))
+            mLoadedList.remove(data);
+
+        getDao().delete(data);
     }
 }
