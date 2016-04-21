@@ -17,6 +17,7 @@ public class LOLClient  {
     private  static String URL_SERVER;
     private  static String URL_SERVER_GLOBAL;
     private static  String REGION;
+    private static String PLATFORM;
 
     private static API api;
     private static API globalApi;
@@ -24,6 +25,7 @@ public class LOLClient  {
         URL_SERVER = context.getString(R.string.url_server);
         URL_SERVER_GLOBAL = context.getString(R.string.url_server_global);
         REGION = context.getString(R.string.region);
+        PLATFORM = context.getString(R.string.id_platform);
     }
 
     protected synchronized static API getApi()
@@ -72,7 +74,7 @@ public class LOLClient  {
 
     public static void getCurrentGame(String userId, Callback<ResponseBody> callback)
     {
-        getApi().getCurrentGame(REGION, userId, Const.KEY_API).enqueue(callback);
+        getApi().getCurrentGame(PLATFORM, userId, Const.KEY_API).enqueue(callback);
     }
 
     public static void getRecentGame(String userId, Callback<ResponseBody> callback)

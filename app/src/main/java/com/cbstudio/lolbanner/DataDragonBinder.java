@@ -8,6 +8,7 @@ import com.cbstudio.lolbanner.model.UserPref;
 import com.cbstudio.lolbanner.model.dao.ChampionData;
 import com.cbstudio.lolbanner.net.DataDragonUrlBuilder;
 import com.cbstudio.lolbanner.net.LOLClient;
+import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,14 +28,7 @@ import retrofit2.Response;
  * Created by Colabear on 2016-04-11.
  */
 
-//TODO : implements Only VERSION_CHECK continue Next!!!
 public class DataDragonBinder implements Callback<ResponseBody> {
-
-//    SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-//    pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-//    pDialog.setTitleText("Loading");
-//    pDialog.setCancelable(false);
-//    pDialog.show();
 
     SweetAlertDialog mDialog;
 
@@ -71,9 +65,9 @@ public class DataDragonBinder implements Callback<ResponseBody> {
     }
 
     public void load() {
+        Logger.d("start load");
         mDialog.show();
         currentStep = STEP.VERSION_CHECK;
-        LOLClient.getLatestVersion(this);
         execute();
     }
 
@@ -104,7 +98,7 @@ public class DataDragonBinder implements Callback<ResponseBody> {
                                 String name = (String)iterator.next();
                                 JSONObject object = json.getJSONObject(name);
                                 ChampionData championData = new ChampionData();
-                                championData.setKey(object.getString("name"));
+                                championData.setKey(object.getString("key"));
                                 championData.setImage(object.getJSONObject("image").getString("full"));
                                 championData.setTitle(object.getString("title"));
                                 championData.setName(name);
@@ -125,7 +119,16 @@ public class DataDragonBinder implements Callback<ResponseBody> {
     }
 
     public void stop() {
+        if(mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
 
+        Logger.d("stop");
+
+        new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                .setTitleText(context.getString(R.string.msg_complete_sync))
+                .setContentText(context.getString(R.string.msg_desc_sync))
+                .show();
     }
 
     @Override
@@ -135,6 +138,7 @@ public class DataDragonBinder implements Callback<ResponseBody> {
                 try {
                     String latestVersion = ResponseTo.latestVersion(response);
                     if (UserPref.getLatestVersion().equals(latestVersion)) {
+                        stop();
                         return;
                     }
 

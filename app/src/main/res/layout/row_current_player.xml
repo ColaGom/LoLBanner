@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="45dp"
     android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/iv_champ"
         android:layout_width="30dp"
-        android:layout_height="30dp"/>
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/tv_name"
-        style="@style/TextSmall"/>
+        style="@style/TextSmall"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_kda"
-        style="@style/TextSmall"/>
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        style="@style/TextSmall"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/tv_tier"
-        style="@style/TextSmall"/>
+        style="@style/TextSmall"
+        android:visibility="gone"/>
 
 </LinearLayout>

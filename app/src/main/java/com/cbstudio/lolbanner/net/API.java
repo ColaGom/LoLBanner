@@ -61,13 +61,13 @@ public interface API {
 
     /**
      * 현재 진행중인 게임 정보 조회
-     * @param region
+     * @param platformId
      * @param summonerId
      * @param apiKey
      * @return
      */
-    @GET("/observer-mode/rest/consumer/getSpectatorGameInfo/{region}/{summonerId}")
-    Call<ResponseBody> getCurrentGame(@Path("region") String region,@Path("summonerId") String summonerId, @Query("api_key") String apiKey);
+    @GET("/observer-mode/rest/consumer/getSpectatorGameInfo/{platformId}/{summonerId}")
+    Call<ResponseBody> getCurrentGame(@Path("platformId") String platformId,@Path("summonerId") String summonerId, @Query("api_key") String apiKey);
 
     /**
      * 소환사 최근 30게임 조회

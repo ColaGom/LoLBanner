@@ -46,7 +46,6 @@ public class ChampionDataLoader extends Loader<ChampionData> {
                 return data;
             }
         }
-
         return null;
     }
 

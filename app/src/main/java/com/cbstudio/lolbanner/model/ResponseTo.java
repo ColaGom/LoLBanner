@@ -34,6 +34,12 @@ public class ResponseTo {
         return  getMapper().readValue(response.body().string(), StatSummary.class);
     }
 
+    public static StatRanked statRanked(Response<ResponseBody> response) throws Exception
+    {
+        return getMapper().readValue(response.body().string(), StatRanked.class);
+    }
+
+
     public static List<RankInfo> rankInfo(Response<ResponseBody> response, List<String> userIds) throws Exception{
         JsonNode node = getMapper().readValue(response.body().string(), JsonNode.class);
 
@@ -46,9 +52,9 @@ public class ResponseTo {
         return result;
     }
 
-    public static CurrentGame currentGame(Response<ResponseBody> response) throws Exception{
-
-        return getMapper().readValue(response.body().string(), CurrentGame.class);
+    public static CurrentGame currentGame(Response<ResponseBody> response) throws Exception {
+        String body = response.body().string();
+        return getMapper().readValue(body, CurrentGame.class);
     }
 
     public static String latestVersion(Response<ResponseBody> response) throws  Exception{

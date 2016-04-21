@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
  * Created by Colabear on 2016-04-12.
  */
 public class JsonReader {
+
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
@@ -26,6 +27,7 @@ public class JsonReader {
             is.close();
         }
     }
+
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;

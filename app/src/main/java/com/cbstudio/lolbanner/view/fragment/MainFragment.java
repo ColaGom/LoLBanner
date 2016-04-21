@@ -14,6 +14,7 @@ import com.cbstudio.lolbanner.model.CurrentGame;
 import com.cbstudio.lolbanner.model.ResponseTo;
 import com.cbstudio.lolbanner.net.LOLClient;
 import com.cbstudio.lolbanner.view.CurrentGamePresenter;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +46,7 @@ public class MainFragment extends BaseFragment {
         ButterKnife.bind(this, rootView);
         tvSumonner.setText(Values.summoner.getSummonerName());
 
+        Logger.d("id : " + Values.summoner.getId());
         LOLClient.getCurrentGame(Values.summoner.getId(), new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
