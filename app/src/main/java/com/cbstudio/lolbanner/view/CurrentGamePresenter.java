@@ -121,7 +121,7 @@ public class CurrentGamePresenter {
 
                                 float winRate = (float) won / (lost + won) * (float) 100;
 
-                                String desc = String.format("%s승 %s패(%.2f) \n KDA:%.2f", stats.getTotalSessionsWon(),
+                                String desc = String.format("%s승 %s패(%.2f) \n KDA:%.2f%", stats.getTotalSessionsWon(),
                                         stats.getTotalSessionsLost(), winRate, kda);
 
                                 tvKda.setText(desc);
