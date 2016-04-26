@@ -9,7 +9,7 @@ comming soon...
 
 ### Functions ###
 
-- Download Champion data and save local(SQLite) from datadragon(Just first, update data version)
+- Download Champion data and save local storage (using SQLite) from datadragon(Just first, update data version)
 - show current game stats(champ, kda, winrate...)
 
 ###With.###
